@@ -1,0 +1,57 @@
+import tkinter as tk
+
+
+class Cronometro:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Cronômetro")
+
+        self.tempo = 0
+        self.rodando = False
+
+        self.label_tempo = tk.Label(root, text=self.formato_tempo(
+            self.tempo), font=("Helvetica", 48))
+        self.label_tempo.pack()
+
+        self.botao_iniciar = tk.Button(
+            root, text="Iniciar", command=self.iniciar)
+        self.botao_iniciar.pack(side=tk.LEFT)
+
+        self.botao_parar = tk.Button(root, text="Parar", command=self.parar)
+        self.botao_parar.pack(side=tk.LEFT)
+
+        self.botao_resetar = tk.Button(
+            root, text="Resetar", command=self.resetar)
+        self.botao_resetar.pack(side=tk.LEFT)
+
+    def formato_tempo(self, tempo):
+        minutos = int(tempo / 600)
+        segundos = int((tempo / 10) % 60)
+        decimos = int(tempo % 10)
+        return f"{minutos:02}:{segundos:02}.{decimos}"
+
+    def iniciar(self):
+        if not self.rodando:
+            self.rodando = True
+            self.atualizar_tempo()
+
+    def parar(self):
+        if self.rodando:
+            self.rodando = False
+
+    def resetar(self):
+        self.parar()
+        self.tempo = 0
+        self.label_tempo.config(text=self.formato_tempo(self.tempo))
+
+    def atualizar_tempo(self):
+        if self.rodando:
+            self.tempo += 1
+            self.label_tempo.config(text=self.formato_tempo(self.tempo))
+            self.root.after(100, self.atualizar_tempo)
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    cronometro = Cronometro(root)
+    root.mainloop()
