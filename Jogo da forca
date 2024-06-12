@@ -1,0 +1,135 @@
+import random
+
+
+def escolher_palavra():
+    palavras = ['desenvolvimento', 'tecnologia',
+                'logica', 'programacao', 'tendencias']
+    return random.choice(palavras)
+
+
+def exibir_forca(tentativas):
+    estagios = [
+        '''
+           +---+
+           |   |
+               |
+               |
+               |
+               |
+        =========
+        ''',
+        '''
+           +---+
+           |   |
+           O   |
+               |
+               |
+               |
+        =========
+        ''',
+        '''
+           +---+
+           |   |
+           O   |
+           |   |
+               |
+               |
+        =========
+        ''',
+        '''
+           +---+
+           |   |
+           O   |
+          /|   |
+               |
+               |
+        =========
+        ''',
+        '''
+           +---+
+           |   |
+           O   |
+          /|\  |
+               |
+               |
+        =========
+        ''',
+        '''
+           +---+
+           |   |
+           O   |
+          /|\  |
+          /    |
+               |
+        =========
+        ''',
+        '''
+           +---+
+           |   |
+           O   |
+          /|\  |
+          / \  |
+               |
+        =========
+        '''
+    ]
+    print(estagios[tentativas])
+
+
+def jogar():
+
+    palavra = escolher_palavra()
+
+    palavra_oculta = ['_'] * len(palavra)
+    tentativas = 0
+    letras_tentadas = []
+
+    print("Bem-vindo ao Jogo da Forca da Estácio!")
+    print(" ".join(palavra_oculta))
+    exibir_forca(tentativas)
+
+    while True:
+
+        letra = input("Digite uma letra: ").lower()
+
+        if letra in letras_tentadas:
+            print("Você já tentou essa letra.")
+            continue
+
+        letras_tentadas.append(letra)
+
+        if letra in palavra:
+            for index, char in enumerate(palavra):
+                if char == letra:
+                    palavra_oculta[index] = letra
+        else:
+
+            tentativas += 1
+
+        exibir_forca(tentativas)
+        print(" ".join(palavra_oculta))
+
+        if '_' not in palavra_oculta:
+            print("Parabéns, você acertou a palavra!")
+            break
+        elif tentativas == 6:
+            print(f"Você perdeu! A palavra escolhida era {palavra}.")
+            break
+
+    novo_jogo()
+
+
+def novo_jogo():
+    while True:
+        resposta = input("Deseja jogar novamente? (s/n): ").lower()
+        if resposta == 's':
+            jogar()
+            break
+        elif resposta == 'n':
+            print("Obrigado por jogar com a Estácio!")
+            break
+        else:
+            print("Resposta inválida. Digite 's' para sim ou 'n' para não.")
+
+
+jogar()
